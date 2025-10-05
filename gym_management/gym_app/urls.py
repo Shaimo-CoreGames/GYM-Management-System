@@ -12,7 +12,6 @@ urlpatterns = [
     path('request_trainer', views.request_trainer, name='request_trainer'),
     path('update_user_info', views.update_user_info, name='update_user_info'),
     path('trainer_portal', views.trainer_portal, name='trainer_portal'),
-    path('create_workout_plan', views.create_workout_plan, name='create_workout_plan'),
     path('create_diet_plan', views.create_diet_plan, name='create_diet_plan'),
     path('assign_plan_to_member', views.assign_plan_to_member, name='assign_plan_to_member'),
     path('admin_portal', views.admin_portal, name='admin_portal'),
@@ -24,4 +23,7 @@ urlpatterns = [
     path('attendance_history', views.attendance_history, name='attendance_history'),  # NEW LINE
     path('delete_member/<int:member_id>', views.delete_member, name='delete_member'),
     path('search_members', views.search_members, name='search_members'),
+    path('contact', views.contact_us, name='static_contact'),
+    path('workout_plan', views.workout_plan, name='workout_plan'),
+    path('workout', views.workout, name='workout'),
 ]

@@ -431,7 +431,79 @@ def search_members(request):
     }
     
     return render(request, 'search_results.html', data)
+def contact_us(request):
+    return render(request, 'contact.html')
 
+def workout_plan(request):
+    id_ = request.GET.get("pid")
+    user = Gym_user.get_user_by_id(int(id_))
+    data={}
+    data['user']=user
+    today = datetime.datetime.now()
+    data['today']=today.strftime("%A")
+    return render(request, 'workout_plan.html', data)
+
+
+def workout(request):
+    id_ = request.GET.get("pid")
+    user = Gym_user.get_user_by_id(int(id_))
+    data={}
+    data['user']=user
+    today_ = datetime.datetime.now()
+    today=today_.weekday()
+    data['today']=today_.strftime("%A")
+    date_time_=user.date_of_joining
+    year = int(date_time_.year)
+    month = int(date_time_.month)
+    day = int(date_time_.day)
+
+    date_ = datetime.datetime(year, month, day)
+    joining_day = date_.strftime('%A')
+    split_ = user.gym_split_id
+    print(split_, type(split_), joining_day)
+    splits_1 = ["chest", "back", "shoulder", "bicep_tricep", "leg", "rest", "chest", "back", "shoulder", "bicep_tricep", "leg", "rest"]
+    splits_2 = ["push", "pull", "leg", "push", "pull", "leg", "push", "pull", "leg", "push", "pull", "leg"]
+    if split_ == 1:
+        if joining_day == 'Monday':
+            exercise = splits_1[6 + today]
+            data['exercise'] = exercise
+        if joining_day == 'Tuesday':
+            exercise = splits_1[5 + today]
+            data['exercise'] = exercise
+        if joining_day == 'Wednesday':
+            exercise = splits_1[4 + today]
+            data['exercise'] = exercise
+        if joining_day == 'Thursday':
+            exercise = splits_1[3 + today]
+            data['exercise'] = exercise
+        if joining_day == 'Friday':
+            exercise = splits_1[2 + today]
+            print(exercise)
+            data['exercise'] = exercise
+        if joining_day == 'Saturday':
+            exercise = splits_1[1 + today]
+            data['exercise'] = exercise
+    if split_ == 2:
+        if joining_day == 'Monday':
+            exercise = splits_2[6 + today]
+            data['exercise'] = exercise
+        elif joining_day == 'Tuesday':
+            exercise = splits_2[5 + today]
+            data['exercise'] = exercise
+        elif joining_day == 'Wednesday':
+            exercise = splits_2[4 + today]
+            data['exercise'] = exercise
+        elif joining_day == 'Thursday':
+            exercise = splits_2[3 + today]
+            data['exercise'] = exercise
+        elif joining_day == 'Friday':
+            exercise = splits_2[2 + today]
+            data['exercise'] = exercise
+        elif joining_day == 'Saturday':
+            exercise = splits_2[1 + today]
+            data['exercise'] = exercise
+
+    return render(request, 'workout.html', data)
 
 def attendance_history(request):
     if 'admin_logged_in' not in request.session:
