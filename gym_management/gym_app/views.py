@@ -504,6 +504,50 @@ def workout(request):
             data['exercise'] = exercise
 
     return render(request, 'workout.html', data)
+def diet_plan(request):
+    return render(request, 'diet_plan.html')
+def change_admin_password(request):   
+    global ADMIN_CREDENTIALS
+    data={}
+    msg=""
+    
+    # Check if admin is logged in
+    if 'admin_logged_in' not in request.session:
+        return redirect('/admin_login')
+    
+    if request.method=="GET":
+        # Pass current admin data to template
+        data["admin"] = ADMIN_CREDENTIALS.copy()
+        return render(request, 'change_admin_password.html', data)
+    
+    if request.method=="POST":
+        new_password = request.POST.get("n_pass")
+        # Update the hardcoded password
+        ADMIN_CREDENTIALS['password'] = new_password
+        msg = "Password Has Changed Successfully!"
+        data["msg"] = msg
+        data["admin"] = ADMIN_CREDENTIALS.copy()
+        return render(request, 'change_admin_password.html', data)
+
+
+def change_user_password(request):
+    data={}
+    msg=""  
+    id_= request.GET.get("u_id")
+    if request.method=="GET":
+        user=Gym_user.objects.get(pk=id_)    
+        data["user"]=user
+        return render(request, 'change_user_password.html', data)
+    if request.method=="POST":
+        user_id=request.POST.get("user_id")
+        n_password=request.POST.get("n_pass")
+        user_data = Gym_user.objects.get(id=user_id)
+        user_data.password=n_password
+        user_data.save()
+        msg="Password Has Changed Successfully!"
+        data["msg"] = msg
+        return render(request, 'change_user_password.html', data)
+
 
 def attendance_history(request):
     if 'admin_logged_in' not in request.session:

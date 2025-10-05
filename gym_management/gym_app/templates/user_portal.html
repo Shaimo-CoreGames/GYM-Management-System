@@ -109,12 +109,10 @@
             transform: scale(1);
             box-shadow: 0 0 0 0 rgba(46, 213, 115, 0.7);
         }
-
         70% {
             transform: scale(1);
             box-shadow: 0 0 0 10px rgba(46, 213, 115, 0);
         }
-
         100% {
             transform: scale(1);
             box-shadow: 0 0 0 0 rgba(46, 213, 115, 0);
@@ -183,7 +181,7 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
         transition: left 0.5s;
     }
 
@@ -417,7 +415,7 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
         transition: left 0.5s;
         z-index: 1;
     }
@@ -438,21 +436,10 @@
     }
 
     /* BMI Status Colors */
-    .bmi-underweight {
-        color: var(--accent-warning);
-    }
-
-    .bmi-normal {
-        color: var(--accent-success);
-    }
-
-    .bmi-overweight {
-        color: var(--accent-warning);
-    }
-
-    .bmi-obese {
-        color: var(--accent-danger);
-    }
+    .bmi-underweight { color: var(--accent-warning); }
+    .bmi-normal { color: var(--accent-success); }
+    .bmi-overweight { color: var(--accent-warning); }
+    .bmi-obese { color: var(--accent-danger); }
 
     /* Theme Switcher */
     .theme-switcher {
@@ -489,21 +476,10 @@
         box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     }
 
-    .theme-orange {
-        background: linear-gradient(135deg, #ff6b35, #f7931e);
-    }
-
-    .theme-green {
-        background: linear-gradient(135deg, #2ed573, #17c0eb);
-    }
-
-    .theme-purple {
-        background: linear-gradient(135deg, #a55eea, #26de81);
-    }
-
-    .theme-blue {
-        background: linear-gradient(135deg, #3742fa, #2f3542);
-    }
+    .theme-orange { background: linear-gradient(135deg, #ff6b35, #f7931e); }
+    .theme-green { background: linear-gradient(135deg, #2ed573, #17c0eb); }
+    .theme-purple { background: linear-gradient(135deg, #a55eea, #26de81); }
+    .theme-blue { background: linear-gradient(135deg, #3742fa, #2f3542); }
 
     /* Modal Styles */
     .modal-content {
@@ -696,7 +672,6 @@
             opacity: 0;
             transform: translate3d(0, 40px, 0);
         }
-
         to {
             opacity: 1;
             transform: translate3d(0, 0, 0);
@@ -704,13 +679,8 @@
     }
 
     @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-
-        to {
-            opacity: 1;
-        }
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 
     .animate-slide-up {
@@ -721,25 +691,10 @@
         animation: fadeIn 1s ease-out;
     }
 
-    .animate-delay-1 {
-        animation-delay: 0.2s;
-        animation-fill-mode: backwards;
-    }
-
-    .animate-delay-2 {
-        animation-delay: 0.4s;
-        animation-fill-mode: backwards;
-    }
-
-    .animate-delay-3 {
-        animation-delay: 0.6s;
-        animation-fill-mode: backwards;
-    }
-
-    .animate-delay-4 {
-        animation-delay: 0.8s;
-        animation-fill-mode: backwards;
-    }
+    .animate-delay-1 { animation-delay: 0.2s; animation-fill-mode: backwards; }
+    .animate-delay-2 { animation-delay: 0.4s; animation-fill-mode: backwards; }
+    .animate-delay-3 { animation-delay: 0.6s; animation-fill-mode: backwards; }
+    .animate-delay-4 { animation-delay: 0.8s; animation-fill-mode: backwards; }
 
     /* Variables for theme consistency */
     :root {
@@ -763,12 +718,10 @@
                     <!-- Profile Header -->
                     <div class="profile-header">
                         <div class="profile-avatar-container animate-fade-in animate-delay-1" id="avatar-container">
-                            <img src="{{user.image.url}}" alt="Profile Avatar" class="profile-avatar"
-                                id="profile-avatar">
+                            <img src="{{user.image.url}}" alt="Profile Avatar" class="profile-avatar" id="profile-avatar">
                             <div class="online-indicator"></div>
                         </div>
-                        <h1 class="profile-name animate-fade-in animate-delay-2">{{user.first_name}} {{user.last_name}}
-                        </h1>
+                        <h1 class="profile-name animate-fade-in animate-delay-2">{{user.first_name}} {{user.last_name}}</h1>
                         <p class="profile-username animate-fade-in animate-delay-3">@{{user.username}}</p>
                         <p class="profile-id animate-fade-in animate-delay-4">ID: #{{user.id}}</p>
                     </div>
@@ -892,8 +845,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="image-upload" class="form-label">Select New Image</label>
-                        <input class="form-control" type="file" id="image-upload" name="image" accept="image/*"
-                            required>
+                        <input class="form-control" type="file" id="image-upload" name="image" accept="image/*" required>
                     </div>
                 </form>
             </div>
@@ -956,11 +908,11 @@
             root.style.setProperty('--success-gradient', theme.success);
             root.style.setProperty('--warning-gradient', theme.warning);
             root.style.setProperty('--danger-gradient', theme.danger);
-
+            
             // Update active theme
             themeColors.forEach(color => color.classList.remove('active'));
             document.querySelector(`[data-theme="${themeName}"]`).classList.add('active');
-
+            
             // Store preference
             localStorage.setItem('preferred-theme', themeName);
         }
@@ -995,11 +947,11 @@
     });
 
     // Preview image when file is selected
-    imageUpload.addEventListener('change', function () {
+    imageUpload.addEventListener('change', function() {
         const file = this.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 uploadPreview.src = e.target.result;
             }
             reader.readAsDataURL(file);
@@ -1007,39 +959,39 @@
     });
 
     // Submit the form via AJAX
-    uploadSubmit.addEventListener('click', function () {
+    uploadSubmit.addEventListener('click', function() {
         const fileInput = document.getElementById('image-upload');
         const file = fileInput.files[0];
-
+        
         if (!file) {
             showNotification('Please select an image file first.', 'error');
             return;
         }
-
+        
         // Validate file type
         const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         if (!allowedTypes.includes(file.type)) {
             showNotification('Invalid file type. Please upload JPEG, PNG, GIF, or WebP images.', 'error');
             return;
         }
-
+        
         // Validate file size (5MB limit)
         if (file.size > 5 * 1024 * 1024) {
             showNotification('File too large. Please upload images smaller than 5MB.', 'error');
             return;
         }
-
+        
         // Show loading state
         uploadSubmit.textContent = 'Uploading...';
         uploadSubmit.disabled = true;
-
+        
         const formData = new FormData();
         formData.append('image', file);
         formData.append('user_id', '{{user.id}}');
-
+        
         // Get CSRF token from the form
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
+        
         fetch('/upload_profile_image/', {
             method: 'POST',
             body: formData,
@@ -1047,34 +999,34 @@
                 'X-CSRFToken': csrfToken,
             },
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    // Update the profile image with the new one
-                    profileAvatar.src = data.image_url + '?t=' + new Date().getTime();
-                    uploadPreview.src = data.image_url + '?t=' + new Date().getTime();
-                    uploadModal.hide();
-
-                    // Show success notification
-                    showNotification(data.message || 'Profile picture updated successfully!', 'success');
-                } else {
-                    showNotification('Error: ' + data.message, 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Upload error:', error);
-                showNotification('An error occurred while uploading the image: ' + error.message, 'error');
-            })
-            .finally(() => {
-                // Reset button state
-                uploadSubmit.textContent = 'Upload Picture';
-                uploadSubmit.disabled = false;
-            });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Update the profile image with the new one
+                profileAvatar.src = data.image_url + '?t=' + new Date().getTime();
+                uploadPreview.src = data.image_url + '?t=' + new Date().getTime();
+                uploadModal.hide();
+                
+                // Show success notification
+                showNotification(data.message || 'Profile picture updated successfully!', 'success');
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Upload error:', error);
+            showNotification('An error occurred while uploading the image: ' + error.message, 'error');
+        })
+        .finally(() => {
+            // Reset button state
+            uploadSubmit.textContent = 'Upload Picture';
+            uploadSubmit.disabled = false;
+        });
     });
 
     // Show notification function
@@ -1086,15 +1038,15 @@
             <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} notification-icon"></i>
             <div>${message}</div>
         `;
-
+        
         // Add to body
         document.body.appendChild(notification);
-
+        
         // Show notification
         setTimeout(() => {
             notification.classList.add('show');
         }, 10);
-
+        
         // Remove after 3 seconds
         setTimeout(() => {
             notification.classList.remove('show');
@@ -1106,13 +1058,13 @@
 
     // Enhanced hover effects for cards
     const cards = document.querySelectorAll('.stat-card, .cta-card, .action-btn, .info-item');
-
+    
     cards.forEach(card => {
-        card.addEventListener('mouseenter', function () {
+        card.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-8px) scale(1.02)';
         });
-
-        card.addEventListener('mouseleave', function () {
+        
+        card.addEventListener('mouseleave', function() {
             this.style.transform = 'translateY(0) scale(1)';
         });
     });
@@ -1139,23 +1091,23 @@
 
     // Enhanced button interactions with ripple effect
     const buttons = document.querySelectorAll('.cta-btn, .action-btn');
-
+    
     buttons.forEach(button => {
-        button.addEventListener('click', function (e) {
+        button.addEventListener('click', function(e) {
             // Create ripple effect
             const ripple = document.createElement('span');
             const rect = this.getBoundingClientRect();
             const size = Math.max(rect.width, rect.height);
             const x = e.clientX - rect.left - size / 2;
             const y = e.clientY - rect.top - size / 2;
-
+            
             ripple.style.width = ripple.style.height = size + 'px';
             ripple.style.left = x + 'px';
             ripple.style.top = y + 'px';
             ripple.classList.add('ripple');
-
+            
             this.appendChild(ripple);
-
+            
             setTimeout(() => {
                 ripple.remove();
             }, 600);
@@ -1180,7 +1132,7 @@
             }
         }
     `;
-
+    
     const style = document.createElement('style');
     style.textContent = rippleCSS;
     document.head.appendChild(style);
@@ -1189,19 +1141,19 @@
     function animateCounter(element, target, duration = 2000) {
         const start = 0;
         const startTime = performance.now();
-
+        
         function updateCounter(currentTime) {
             const elapsedTime = currentTime - startTime;
             const progress = Math.min(elapsedTime / duration, 1);
-
+            
             const currentValue = Math.floor(progress * target);
             element.textContent = currentValue;
-
+            
             if (progress < 1) {
                 requestAnimationFrame(updateCounter);
             }
         }
-
+        
         requestAnimationFrame(updateCounter);
     }
 
@@ -1212,7 +1164,7 @@
             if (entry.isIntersecting) {
                 const target = entry.target;
                 const value = parseFloat(target.textContent);
-
+                
                 if (!isNaN(value)) {
                     animateCounter(target, value);
                     statsObserver.unobserve(target);
@@ -1231,14 +1183,14 @@
 
     // Error handling for missing images
     document.querySelectorAll('img').forEach(img => {
-        img.addEventListener('error', function () {
+        img.addEventListener('error', function() {
             this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyUzYuNDggMjIgMTIgMjJTMjIgMTcuNTIgMjIgMTJTMTcuNTIgMiAxMiAyWk0xMyAxN0gxMVYxNUgxM1YxN1pNMTMgMTNIMTFWN0gxM1YxM1oiIGZpbGw9IiM2NjZiNzMiLz4KPC9zdmc+';
             this.style.backgroundColor = 'var(--bg-card)';
         });
     });
 
     // Initialize animations on page load
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // Add entrance animations
         setTimeout(() => {
             document.querySelectorAll('.animate-slide-up, .animate-fade-in').forEach((el, index) => {
@@ -1246,7 +1198,7 @@
                 el.style.transform = 'translateY(0)';
             });
         }, 100);
-
+        
         // Initialize tooltips if Bootstrap is available
         if (typeof bootstrap !== 'undefined') {
             const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -1262,19 +1214,19 @@
         if (scrollTimeout) {
             clearTimeout(scrollTimeout);
         }
-
+        
         scrollTimeout = setTimeout(() => {
             // Add scroll-based enhancements here if needed
         }, 10);
     });
 
     // Keyboard accessibility
-    document.addEventListener('keydown', function (e) {
+    document.addEventListener('keydown', function(e) {
         // ESC to close modal
         if (e.key === 'Escape' && uploadModal._isShown) {
             uploadModal.hide();
         }
-
+        
         // Enter to upload when modal is focused
         if (e.key === 'Enter' && document.activeElement === uploadSubmit) {
             uploadSubmit.click();
@@ -1282,7 +1234,7 @@
     });
 
     // Clean up event listeners on page unload
-    window.addEventListener('beforeunload', function () {
+    window.addEventListener('beforeunload', function() {
         // Clean up observers
         if (observer) observer.disconnect();
         if (statsObserver) statsObserver.disconnect();

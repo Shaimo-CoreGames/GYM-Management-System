@@ -26,4 +26,7 @@ urlpatterns = [
     path('contact', views.contact_us, name='static_contact'),
     path('workout_plan', views.workout_plan, name='workout_plan'),
     path('workout', views.workout, name='workout'),
+    path('diet_plan', views.diet_plan, name='workout'),
+    path('change_admin_password', views.change_admin_password, name='workout'),
+    path('change_user_password', views.change_user_password, name='workout'),
 ]
