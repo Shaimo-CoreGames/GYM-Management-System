@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import make_password, check_password
 from .models import *
@@ -321,6 +322,22 @@ def admin_portal(request):
     
     return render(request, 'admin_portal.html', data)
 
+def userdetails(request):
+    u_id = request.GET.get('u_id')
+
+    if u_id:
+        try:
+            user = Gym_user.objects.get(id=int(u_id))
+        except Gym_user.DoesNotExist:
+            return HttpResponse("User not found")
+
+        return render(request, 'userdetails.html', {'user': user})
+    else:
+        return HttpResponse("No user ID provided")
+
+
+
+
 def approve_payment(request, user_id):
     if 'admin_logged_in' not in request.session:
         return redirect('/admin_login')
@@ -403,14 +420,21 @@ def trainer_attendance(request):
     
     return render(request, 'trainer_attendance.html', data)
 
-def delete_member(request, member_id):
-    if 'admin_logged_in' not in request.session:
-        return redirect('/admin_login')
-    
-    member = Gym_user.objects.get(id=member_id)
-    member.delete()
-    
-    return redirect('/admin_portal')
+def delete_user(request, u_id):
+    try:
+        user = Gym_user.objects.get(id=u_id)
+        user.delete()
+        return redirect("all_members")
+    except Gym_user.DoesNotExist:
+        return HttpResponse("User not found", status=404)
+
+
+
+def delete_profbyuser(request):
+    user_id=request.GET.get("u_id")
+    user_=Gym_user.objects.get(id=user_id)
+    user_.delete()
+    return redirect("/")
 
 def search_members(request):
     if 'admin_logged_in' not in request.session:
@@ -506,6 +530,108 @@ def workout(request):
     return render(request, 'workout.html', data)
 def diet_plan(request):
     return render(request, 'diet_plan.html')
+
+def admin_login(request):
+    data={}
+    if request.method=="POST":
+        username = request.POST.get("a_username")
+        password = request.POST.get("a_password")
+        error = "" 
+        
+        # Check against hardcoded credentials
+        if username == ADMIN_CREDENTIALS['username'] and password == ADMIN_CREDENTIALS['password']:
+            # Set session to mark admin as logged in
+            request.session['admin_logged_in'] = True
+            request.session['admin_username'] = username
+            
+            # data["admin"] = ADMIN_CREDENTIALS.copy()
+            return redirect("admin_portal")
+        else:
+            error = "Incorrect Username or password!"
+            data["error"] = error
+            return render(request, 'admin_login.html', data)
+    else:
+        return render(request, 'admin_login.html', data)
+
+def admin_portal(request):
+    # Check if admin is logged in via session
+    if 'admin_logged_in' not in request.session:
+        return redirect('/admin_login')
+    
+    # Pass hardcoded admin data to template
+    admin_data = ADMIN_CREDENTIALS.copy()
+    return render(request, 'admin_portal.html', {'admin': admin_data})
+
+def all_members(request):
+    members = Gym_user.get_all_users()
+    return render(request, 'all_members.html', {'users': members})
+
+
+
+def admin_logout(request):
+    # Clear admin session
+    if 'admin_logged_in' in request.session:
+        del request.session['admin_logged_in']
+    if 'admin_username' in request.session:
+        del request.session['admin_username']
+    return redirect('/')
+
+
+
+
+
+# @csrf_exempt
+# @require_POST
+def upload_profile_image(request):
+    try:
+        # Get user ID from POST data or GET parameter
+        user_id = request.POST.get('user_id') or request.GET.get('u_id')
+        
+        if not user_id:
+            return JsonResponse({'success': False, 'message': 'User ID is required.'})
+        
+        # Get the user
+        user = Gym_user.objects.get(id=int(user_id))
+        
+        if 'image' in request.FILES:
+            image_file = request.FILES['image']
+            
+            # Validate file type
+            allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+            if image_file.content_type not in allowed_types:
+                return JsonResponse({'success': False, 'message': 'Invalid file type. Please upload JPEG, PNG, GIF, or WebP images.'})
+            
+            # Validate file size (5MB limit)
+            if image_file.size > 5 * 1024 * 1024:
+                return JsonResponse({'success': False, 'message': 'File too large. Please upload images smaller than 5MB.'})
+            
+            # Delete old image if it exists and is not the default
+            if user.image and user.image.name != "users_profile_images/image.png":
+                try:
+                    user.image.delete(save=False)
+                except:
+                    pass  # Ignore if file doesn't exist
+            
+            # Save the new image
+            user.image.save(image_file.name, image_file, save=True)
+            
+            return JsonResponse({
+                'success': True, 
+                'message': 'Profile picture updated successfully!',
+                'image_url': user.image.url
+            })
+        else:
+            return JsonResponse({'success': False, 'message': 'No image file provided.'})
+            
+    except Gym_user.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'User does not exist.'})
+    except ValueError:
+        return JsonResponse({'success': False, 'message': 'Invalid user ID format.'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': f'An error occurred: {str(e)}'})
+
+
+
 def change_admin_password(request):   
     global ADMIN_CREDENTIALS
     data={}
@@ -529,6 +655,27 @@ def change_admin_password(request):
         data["admin"] = ADMIN_CREDENTIALS.copy()
         return render(request, 'change_admin_password.html', data)
 
+def take_attendance(request):
+    ids=[]
+    if request.method=="GET":
+        return render(request, 'take_attendance.html')
+    else:
+        ids.append(request.POST.get("1"))
+        ids.append(request.POST.get("2"))
+        ids.append(request.POST.get("3"))
+        ids.append(request.POST.get("4"))
+        ids.append(request.POST.get("5"))
+        
+        for i in range(5):
+            try:
+                user = Gym_user.get_user_by_id(ids[i])
+                user.no_of_days += 1 
+                user.save()
+            except Gym_user.DoesNotExist:            
+                continue
+        data={}
+        data['msg']="Successfully updated the attendance!"
+        return render(request, 'take_attendance.html', data)    
 
 def change_user_password(request):
     data={}
@@ -570,3 +717,45 @@ def attendance_history(request):
     }
     
     return render(request, 'attendance_history.html', data)
+
+def profilePage(request):
+    id_ = request.GET.get("u_id")
+    singleuser = Gym_user.get_user_by_id(int(id_))
+    user_data = {}
+    user_data["a_user"] = singleuser
+    height=singleuser.height
+    weight=singleuser.weight
+    a=weight/((height/100)**2)
+    bmi=round(a,2)
+    user_data['bmi']=bmi
+    if bmi < 18.5 :
+        category = "Underweight"
+        user_data['bmi_status'] = category
+    elif bmi < 25 :
+        category = "Normal weight"
+        user_data['bmi_status'] = category
+
+    elif bmi < 30 :
+        category = "Overweight"
+        user_data['bmi_status'] = category
+    else:
+        category = "Obese"
+        user_data['bmi_status'] = category
+
+    return render(request, 'profile_page.html', user_data)
+
+
+def searchPage(request):
+    query = request.POST.get("searchedMember")
+    searchedMember = Gym_user.get_searched_members(query)
+    if not searchedMember:
+        searchedMember = Gym_user.by_lastName(query)
+        if not searchedMember:
+            searchedMember = Gym_user.by_id(query)
+            if not searchedMember:
+                searchedMember = Gym_user.by_username(query)
+                if not searchedMember:
+                    searchedMember = Gym_user.by_dob(query)
+    data = {}
+    data["members"] = searchedMember
+    return render(request, 'searchPage.html', data)
