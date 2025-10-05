@@ -1,0 +1,290 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gym Management System{% endblock %}</title>
+    {% block extra_head %}{% endblock %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            {% block page_script %} {% endblock %}
+        });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            color: #333;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body.login-page {
+            background: url("{% static 'images/Loginback.png' %}") no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            background-color: #333;
+            /* Fallback color */
+        }
+
+        body.login-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.3);
+            /* Semi-transparent overlay */
+            z-index: 1;
+        }
+
+        nav {
+            background: rgba(51, 51, 51, 0.5);
+            color: white;
+            padding: 0.5rem 2rem;
+            /* Reduced top/bottom padding */
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-brand img {
+            height: 70px;
+            /* Increased logo height */
+            margin-right: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-brand:hover img {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a:hover:not(.nav-brand) {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-page {
+            color: white;
+            /* Making all text white */
+        }
+
+        .login-page h1,
+        .login-page h2,
+        .login-page h3,
+        .login-page h4,
+        .login-page h5,
+        .login-page h6 {
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-page p,
+        .login-page label,
+        .login-page span {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .logout-btn {
+            background: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+            border: 1px solid rgba(255, 68, 68, 0.3);
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 68, 68, 0.2) !important;
+            border-color: #ff4444;
+        }
+
+        .register-link {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .register-link:hover {
+            background: rgba(76, 175, 80, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: transparent;
+            border-radius: 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-danger {
+            background: #f44336;
+        }
+
+        .error {
+            color: red;
+            margin: 1rem 0;
+        }
+
+        .success {
+            color: green;
+            margin: 1rem 0;
+        }
+
+        form {
+            margin: 1rem 0;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        th {
+            background: rgba(51, 51, 51, 0.7);
+            color: white;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        select {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 0.5rem;
+            border-radius: 4px;
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="{% url 'home' %}" class="nav-brand">
+            <img src="{% static 'images/logo.png' %}" alt="Gym Logo">
+        </a>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            {% if user.is_authenticated %}
+            {% if user.is_staff %}
+            <a href="{% url 'admin_portal' %}">Admin Portal</a>
+            <a href="{% url 'search_members' %}">Search Members</a>
+            <a href="{% url 'trainer_attendance' %}">Trainer Attendance</a>
+            {% elif user.is_trainer %}
+            <a href="{% url 'trainer_portal' %}">Trainer Portal</a>
+            {% else %}
+            <a href="{% url 'user_portal' %}">User Portal</a>
+            {% endif %}
+            <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+
+</html>

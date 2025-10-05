@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Home - Gym Management System{% endblock %}
+
+{% block page_script %}
+    document.body.classList.add('login-page');
+{% endblock %}
+
+{% block content %}
+<div class="login-container" style="text-align: center;">
+    <h1 style="margin-bottom: 1.5rem;">Welcome to Gym Management System</h1>
+    <p style="margin-bottom: 2rem;">Please select your login type:</p>
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <a href="/user_login" class="btn" style="background: #4CAF50;">Member Login</a>
+        <a href="/trainer_login" class="btn" style="background: #2196F3;">Trainer Login</a>
+        <a href="/admin_login" class="btn" style="background: #f44336;">Admin Login</a>
+    </div>
+    <p style="margin-top: 2rem;">New member? <a href="{% url 'new_registration' %}" class="register-link">Register Here</a></p>
+</div>
+{% endblock %}
